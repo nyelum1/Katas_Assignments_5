@@ -13,3 +13,7 @@ CONFIG = {
 }
 
 SERIES_IDS = ["JTS540000000000000QUR", "JTS540000000000000JOR", "JTS540000000000000HIR"]
+
+
+# Shared resource lock for thread-safe writing
+log_lock = threading.Lock()
