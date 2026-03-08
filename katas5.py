@@ -11,3 +11,5 @@ CONFIG = {
     "output_file": "combined_results.json",
     "error_log": "errors.log"
 }
+
+SERIES_IDS = ["JTS540000000000000QUR", "JTS540000000000000JOR", "JTS540000000000000HIR"]
