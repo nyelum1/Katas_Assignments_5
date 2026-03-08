@@ -68,3 +68,6 @@ def fetch_series(series_id):
         json.dump(final_results, f, indent=4)
     
     print(f"\nFinished! Processed {len(final_results)} series successfully.")
+
+    if __name__ == "__main__":
+        run_pipeline()
