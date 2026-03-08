@@ -42,3 +42,29 @@ def fetch_series(series_id):
             with open(CONFIG["error_log"], "a") as f:
                 f.write(f"Failed {series_id}: {str(e)}\n")
         return {"series_id": series_id, "error": str(e), "success": False}
+    
+
+    def run_pipeline():
+    """Main driver function to coordinate the threading and saving."""
+    final_results = []
+    
+    print(f"Starting fetch for {len(SERIES_IDS)} series...")
+
+    with ThreadPoolExecutor(max_workers=CONFIG["max_threads"]) as executor:
+        # Submit tasks
+        tasks = {executor.submit(fetch_series, s_id): s_id for s_id in SERIES_IDS}
+
+        # Collect results as they finish
+        for future in as_completed(tasks):
+            res = future.result()
+            if res["success"]:
+                final_results.append(res)
+                print(f"✔ Done: {res['series_id']}")
+            else:
+                print(f"✘ Fail: {res['series_id']} (logged to {CONFIG['error_log']})")
+
+    # Save all successful results to one file
+    with open(CONFIG["output_file"], "w") as f:
+        json.dump(final_results, f, indent=4)
+    
+    print(f"\nFinished! Processed {len(final_results)} series successfully.")
